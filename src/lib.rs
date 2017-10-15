@@ -454,6 +454,6 @@ pub extern "C" fn rules_from_str(input_ptr: *const i8) -> Array<CParkingRule> {
 }
 
 #[no_mangle]
-pub extern "C" fn c_free_rules(rules: Array<CParkingRule>) {
+pub extern "C" fn free_rules(rules: Array<CParkingRule>) {
     drop(rules);
 }
