@@ -1,0 +1,73 @@
+arrow = _{ ("<"+ ~ "-"+ ~ ">"+) | ("<"+ ~ "-"+) | ("-"+ ~ ">"+) | (^"w/" ~ ^"single"? ~ ^"arrow") }
+parens = _{ "(" ~ ('a'..'z' | 'A'..'Z')+ ~ ")" }
+night = _{ ^"special"? ~ ^"night" ~ ^"regulation" }
+comment = _{ parens | arrow }
+whitespace = _{ " " | "&" }
+
+sunday = { ^"sun" ~ ^"day"? }
+monday = { ^"mon" ~ ^"day"? }
+tuesday = { ^"tues" ~ ^"day"? }
+wednesday = { ^"wed" ~ ^"nesday"? }
+thursday = { ^"thurs" ~ ^"day"? }
+friday = { ^"fri" ~ ^"day"? }
+saturday = { ^"sat" ~ ^"urday"? }
+day = { sunday | monday | tuesday | wednesday | thursday | friday | saturday }
+school = { ^"school" }
+all = { ^"all" | ^"any" }
+days = { day+ | ((all | school) ~ ^"days") }
+
+january = { ^"jan" ~ ^"uary"? }
+february = { ^"feb" ~ ^"ruary"? }
+march = { ^"mar" ~ ^"ch"? }
+april = { ^"apr" ~ ^"il"? }
+may = { ^"may" }
+june = { ^"jun" ~ ^"e"? }
+july = { ^"jul" ~ ^"y"? }
+august = { ^"aug" ~ ^"ust"? }
+september = { ^"sep" ~ ^"t"? ~ ^"ember"? }
+october = { ^"oct" ~ ^"ober"? }
+november = { ^"nov" ~ ^"ember"? }
+december = { ^"dec" ~ ^"ember"? }
+month = { january | february | march | april | may | june | july | august | september | october | november | december }
+months = { month+ }
+
+digit = { '0'..'9' }
+meridiem = { ^"am" | ^"pm" }
+midday = { ^"noon" }
+midnight = { ^"midnight" }
+anytime = { (all ~ "time") }
+hours = ${ digit ~ (!" " ~ digit)? }
+minutes = ${ digit ~ (!" " ~ digit)? }
+time = { (hours ~ ((":" ~ minutes ~ meridiem?) | meridiem?)) | midday | midnight }
+
+range_infix = _{ ^"thru" | ^"to" | "-" }
+day_range = { (day ~ range_infix ~ day) | days }
+month_range = { (month ~ range_infix ~ month) | months }
+time_range = { ((time | (digit ~ (!" " ~ digit)?)) ~ range_infix? ~ time) | anytime }
+exception_day = { (^"except" | ^"exc") ~ day }
+three_part_range = _{ (month_range+ ~ day_range+ ~ time_range+) | (day_range+ ~ month_range+ ~ time_range+) | (day_range+ ~ time_range+ ~ month_range+) | (month_range+ ~ time_range+ ~ day_range+) | (time_range+ ~ month_range+ ~ day_range+) | (time_range+ ~ day_range+ ~ month_range+) }
+two_part_range = _{ (month_range+ ~ day_range+) | (day_range+ ~ month_range+) | (day_range+ ~ time_range+) | (month_range+ ~ time_range+) | (time_range+ ~ month_range+) | (time_range+ ~ day_range+) }
+one_part_range = _{ month_range+ | day_range+ | time_range+ }
+range = { ^"from"? ~ (three_part_range | two_part_range | one_part_range) ~ exception_day? }
+
+fraction = { "/" ~ digit+ }
+duration = { digit+ ~ fraction? ~ (^"hour" | ^"hr" | ^"h") ~ ^"limit"? }
+
+metered = { ^"metered" | ^"muni-meter" | ^"m" }
+parking = { (^"park" ~ ^"ing"?) | ^"p"}
+standing = { ^"stand" ~ ^"ing"? }
+stopping = { ^"stop" ~ ^"ping"? }
+action = _{ duration? ~ metered? ~ (parking | standing | stopping) ~ duration? }
+
+trucks = { ^"trucks" ~ ^"loading" ~ ^"and"? ~ ^"unloading" }
+commercial = { ^"commercial" ~ ^"vehicles" }
+horse_cabs = { ^"horse" ~ ^"drawn" ~ ^"cabs" }
+vehicle = _{ trucks | commercial | horse_cabs }
+vehicle_only = { vehicle ~ ^"only" }
+vehicle_exception = { ^"except" ~ vehicle }
+vehicle_modifier = { vehicle_only | vehicle_exception }
+
+negative = { ^"no" }
+regulation = { negative? ~ action ~ vehicle_modifier? ~ range* }
+
+base = { night? ~ (regulation ~ (^"others" | ^"including" ~ day)?)* ~ comment* }

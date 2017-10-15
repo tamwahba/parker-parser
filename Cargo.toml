@@ -1,0 +1,15 @@
+[package]
+name = "parker-parser"
+version = "0.1.0"
+description = "Simple parser for NYC street signs"
+license = "GPL-3.0"
+authors = ["Tamer Wahba <tamwahba@hotmail.com>"]
+
+[dependencies]
+pest = "^1.0.0-beta"
+pest_derive = "^1.0.0-beta"
+
+[lib]
+name = "parkerparser"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
