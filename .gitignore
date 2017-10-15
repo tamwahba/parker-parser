@@ -1,0 +1,8 @@
+# Compiled files
+/target/
+
+# This is a library
+Cargo.lock
+
+# RustFmt backups
+**/*.rs.bk
