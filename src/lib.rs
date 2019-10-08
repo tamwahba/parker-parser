@@ -302,7 +302,7 @@ fn process_regulation(pair: RegulationPair) -> Vec<ParkingRule> {
 }
 
 pub fn parse_str(input: &str) -> Vec<ParkingRule> {
-    let pairs = parking::RuleParser::parse_str(Rule::base, input).unwrap();
+    let pairs = parking::RuleParser::parse(Rule::base, input).unwrap();
 
     pairs
         .clone()

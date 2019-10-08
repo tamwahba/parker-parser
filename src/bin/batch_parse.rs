@@ -4,8 +4,6 @@ use std::fs::File;
 use std::io::BufRead;
 use std::io::BufReader;
 
-extern crate parker;
-
 fn main() {
     use std::io::Write;
 
@@ -33,7 +31,7 @@ fn main() {
     let mut missed = 0;
     let mut total = 0;
     for (idx, line) in reader.lines().flat_map(|res| res.ok()).enumerate() {
-        let rules = parker::parse_str(&line);
+        let rules = parkerparser::parse_str(&line);
         total = idx;
 
         if rules.is_empty() {

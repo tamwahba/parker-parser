@@ -7,8 +7,8 @@ use pest;
 #[grammar = "grammar.pest"]
 pub struct RuleParser;
 
-pub type RegulationPair<'a> = pest::iterators::Pair<Rule, pest::inputs::StrInput<'a>>;
-pub type RegulationPairs<'a> = pest::iterators::Pairs<Rule, pest::inputs::StrInput<'a>>;
+pub type RegulationPair<'a> = pest::iterators::Pair<'a, Rule>;
+pub type RegulationPairs<'a> = pest::iterators::Pairs<'a, Rule>;
 
 #[derive(Clone)]
 #[derive(Copy)]
