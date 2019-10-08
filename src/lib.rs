@@ -156,7 +156,7 @@ fn process_range(pair: RegulationPair) -> Vec<Date> {
                 if day_ranges.is_empty() {
                     day_ranges.push(Day::span_except(day));
                 } else {
-                    for mut day_range in day_ranges.iter_mut() {
+                    for day_range in day_ranges.iter_mut() {
                         match *day_range {
                             Span::Range(_, _) => continue, // generally does not
                             Span::All => {
@@ -214,7 +214,7 @@ fn process_duration(pair: RegulationPair) -> TimeLimit {
         1
     };
 
-    TimeLimit::Minutes((numerator * 60 / denominator))
+    TimeLimit::Minutes(numerator * 60 / denominator)
 }
 
 fn process_vehicle_modifier(pair: RegulationPair) -> Vec<Vehicle> {
